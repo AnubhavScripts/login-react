@@ -4,25 +4,33 @@ import LoginPage from './components/loginpage';
 import HomePage from './components/Homepage';
 import { ProtectedRoute } from './components/protectedRoute';
 
-function App() {
+const App = () => {
   return (
-    <Router>
-      <AuthProvider>
+    <AuthProvider>
+      <Router>
         <Routes>
+          {/* Public route */}
           <Route path="/login" element={<LoginPage />} />
-          <Route 
-            path="/home" 
+          
+          {/* Protected route */}
+          <Route
+            path="/home"
             element={
-              <protectedRoute>
+              <ProtectedRoute>
                 <HomePage />
-              </protectedRoute>
-            } 
+              </ProtectedRoute>
+            }
           />
-          <Route path="/" element={<Navigate to="/home" />} />
+          
+          {/* Redirect root to /home, protection handled by ProtectedRoute */}
+          <Route path="/" element={<Navigate to="/home" replace />} />
+          
+          {/* Catch all other routes and redirect to /home */}
+          <Route path="*" element={<Navigate to="/home" replace />} />
         </Routes>
-      </AuthProvider>
-    </Router>
+      </Router>
+    </AuthProvider>
   );
-}
+};
 
 export default App;
